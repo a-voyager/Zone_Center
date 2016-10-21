@@ -9,11 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var http_1 = require('@angular/http');
+require('rxjs/add/operator/toPromise');
+require('rxjs/add/operator/map');
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(http) {
+        this.http = http;
         this.title = "Test";
+        this.url = 'http://localhost:9090/login';
     }
     AppComponent.prototype.login = function () {
+        var params = new http_1.URLSearchParams();
+        params.set("name", "wuhaojie");
+        params.set("password", "123456");
+        this.http.post(this.url, params)
+            .map(function (res) { return res.json(); })
+            .subscribe(function (response) {
+            console.log('login: ' + response.msg);
+            var user = response.data;
+            console.log('login: ' + user.text);
+        });
+    };
+    AppComponent.prototype.handleError = function (error) {
+        console.error('network error', error);
+        return Promise.reject(error.message || error);
     };
     AppComponent = __decorate([
         core_1.Component({
@@ -21,7 +40,7 @@ var AppComponent = (function () {
             templateUrl: 'app.component.html',
             moduleId: module.id
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [http_1.Http])
     ], AppComponent);
     return AppComponent;
 }());
