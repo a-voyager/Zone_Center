@@ -1,0 +1,71 @@
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand">注册帐号</a>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a (click)="login()"><span class="glyphicon glyphicon-log-in"></span>  登录</a></li>
+		</ul>
+	</div>
+</nav>
+<div class="alert alert-warning" *ngIf="alertMessage">
+	<a class="close" data-dismiss="alert" (click)="dismissAlert()" >
+        &times;
+    </a>
+	<strong>警告！</strong>{{alertMessage}}
+</div>
+<div class="container">
+	<br>
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">用户名</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" [(ngModel)]="inputName" />
+				</div>
+			</div>
+
+			<br>
+			<br>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">密码</label>
+				<div class="col-sm-10">
+					<input type="password" class="form-control" [(ngModel)]="inputPassword" />
+				</div>
+			</div>
+
+			<br>
+			<br>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">确认密码</label>
+				<div class="col-sm-10">
+					<input type="password" class="form-control" [(ngModel)]="inputPasswordRe" />
+				</div>
+			</div>
+			<br>
+			<br>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">年龄</label>
+				<div class="col-sm-10">
+					<input type="password" class="form-control" [(ngModel)]="inputAge" />
+				</div>
+			</div>
+
+			<br>
+			<br>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">个性签名</label>
+				<textarea class="form-control" rows="3" [(ngModel)]="inputText"></textarea>
+			</div>
+
+
+		</div>
+		<div class="col-md-12 column">
+			<button type="button" class="btn btn-default btn-success btn-lg btn-block" (click)="register()">提交</button>
+		</div>
+	</div>
+</div>

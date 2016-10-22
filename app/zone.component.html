@@ -1,0 +1,46 @@
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand">个人中心</a>
+		</div>
+	</div>
+</nav>
+<div *ngIf="user">
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-2 column">
+				<img width="180px" height="180px" src="http://7xqdz8.com1.z0.glb.clouddn.com/blog_logo.jpg" class="img-circle" />
+			</div>
+			<div class="col-md-10 column">
+				<div class="list-group">
+					<a href="#" class="list-group-item active">个人资料</a>
+					<div class="list-group-item">
+						<h4 class="list-group-item-heading">
+                            用户名
+						</h4>
+						<p class="list-group-item-text">
+                            {{user.name}}
+						</p>
+					</div>
+					<div class="list-group-item">
+						<h4 class="list-group-item-heading">
+                            年龄
+						</h4>
+						<p class="list-group-item-text">
+                            {{user.age}}
+						</p>
+					</div>
+					<div class="list-group-item">
+						<h4 class="list-group-item-heading">
+                            个性签名
+						</h4>
+						<p class="list-group-item-text">
+                            {{user.text}}
+						</p>
+					</div>
+					<a class="list-group-item active" (click)="logout()"> 注销</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

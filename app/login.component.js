@@ -13,13 +13,17 @@ var http_1 = require('@angular/http');
 require('rxjs/add/operator/toPromise');
 require('rxjs/add/operator/map');
 var core_2 = require('@angular/core');
-var AppComponent = (function () {
-    function AppComponent(http) {
+var router_1 = require('@angular/router');
+var user_service_1 = require('./user.service');
+var LoginComponent = (function () {
+    function LoginComponent(http, router, userService) {
         this.http = http;
+        this.router = router;
+        this.userService = userService;
         this.title = "Test";
         this.url = 'http://localhost:9090/login';
     }
-    AppComponent.prototype.login = function () {
+    LoginComponent.prototype.login = function () {
         var _this = this;
         if (!this.inputName || !this.inputPassword) {
             alert("请输入用户名和密码！");
@@ -34,37 +38,45 @@ var AppComponent = (function () {
             console.log('login: ' + response.msg);
             if (response.code == 1) {
                 var user = response.data;
+                _this.userService.setUser(user);
                 console.log('login: ' + user.text);
                 _this.showLoginSuccessDialog = true;
             }
+            else {
+                alert("登录失败！用户名或密码错误");
+            }
         });
     };
-    AppComponent.prototype.register = function () {
+    LoginComponent.prototype.register = function () {
+        this.router.navigate(['/register']);
     };
-    AppComponent.prototype.handleError = function (error) {
+    LoginComponent.prototype.handleError = function (error) {
         console.error('network error', error);
         return Promise.reject(error.message || error);
     };
-    AppComponent.prototype.showDialog = function (b) {
+    LoginComponent.prototype.showDialog = function (b) {
         this.showLoginSuccessDialog = b;
+    };
+    LoginComponent.prototype.toZone = function () {
+        this.router.navigate(['/zone']);
     };
     __decorate([
         core_2.Input(), 
         __metadata('design:type', String)
-    ], AppComponent.prototype, "inputName", void 0);
+    ], LoginComponent.prototype, "inputName", void 0);
     __decorate([
         core_2.Input(), 
         __metadata('design:type', String)
-    ], AppComponent.prototype, "inputPassword", void 0);
-    AppComponent = __decorate([
+    ], LoginComponent.prototype, "inputPassword", void 0);
+    LoginComponent = __decorate([
         core_1.Component({
-            selector: 'my-app',
-            templateUrl: 'app.component.html',
+            selector: 'login',
+            templateUrl: 'login.component.html',
             moduleId: module.id
         }), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], AppComponent);
-    return AppComponent;
+        __metadata('design:paramtypes', [http_1.Http, router_1.Router, user_service_1.UserService])
+    ], LoginComponent);
+    return LoginComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.LoginComponent = LoginComponent;
+//# sourceMappingURL=login.component.js.map
