@@ -8,11 +8,11 @@
 		</ul>
 	</div>
 </nav>
-<div class="alert alert-warning" *ngIf="alertMessage" [@flyInOut]="alertState">
-	<a class="close" data-dismiss="alert" (click)="dismissAlert()" >
+<div class="alert alert-info" *ngIf="alertMessage" [@flyInOut]="alertState">
+	<a class="close" data-dismiss="alert" (click)="dismissAlert()">
         &times;
     </a>
-	<strong>警告！</strong>{{alertMessage}}
+	<strong>提示！</strong>{{alertMessage}}
 </div>
 <div class="container">
 	<br>
@@ -22,8 +22,21 @@
 			<div class="form-group">
 				<label class="col-sm-2 control-label">用户名</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" [(ngModel)]="inputName" />
+					<input type="text" class="form-control" [(ngModel)]="inputName" required minlength="3" maxlength="24" #name="ngModel" />
+
+					<div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger" style="margin: 10px 0px">
+						<div [hidden]="!name.errors.required">
+							请输入用户名
+						</div>
+						<div [hidden]="!name.errors.minlength">
+							用户名长度要大于3位
+						</div>
+						<div [hidden]="!name.errors.maxlength">
+							用户名长度不能大于24位
+						</div>
+					</div>
 				</div>
+
 			</div>
 
 			<br>
@@ -43,6 +56,11 @@
 				<label class="col-sm-2 control-label">确认密码</label>
 				<div class="col-sm-10">
 					<input type="password" class="form-control" [(ngModel)]="inputPasswordRe" />
+					<div *ngIf="inputPasswordRe && inputPassword !== inputPasswordRe" class="alert alert-danger" style="margin: 10px 0px">
+						<div [hidden]="(inputPassword === inputPasswordRe)">
+							两次密码不一致
+						</div>
+					</div>
 				</div>
 			</div>
 			<br>
