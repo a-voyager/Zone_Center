@@ -1,4 +1,7 @@
-import { Component, Input } from '@angular/core'
+import {
+    Component, Input, trigger,
+    state, style, transition, animate
+} from '@angular/core'
 import { User } from './user'
 import { Http, Headers, Response, RequestOptions, URLSearchParams } from '@angular/http'
 import { ResponseEntity } from './response-entity'
@@ -9,8 +12,28 @@ import { Observable } from 'rxjs';
 @Component({
     selector: 'register',
     templateUrl: 'register.component.html',
-    moduleId: module.id
+    moduleId: module.id,
+    animations: [
+        trigger('flyInOut', [
+            state('in', style({ opacity: 1, transform: 'translateX(0)' })),
+            transition('void => *', [
+                style({
+                    opacity: 0,
+                    transform: 'translateX(-100%)'
+                }),
+                animate('0.4s ease-in')
+            ]),
+            transition('* => void', [
+                animate('0.2s 10 ease-out', style({
+                    opacity: 0,
+                    transform: 'translateX(100%)'
+                }))
+            ])
+        ])
+    ]
 })
+
+
 
 export class RegisterComponent {
 
@@ -33,11 +56,17 @@ export class RegisterComponent {
 
 
     alertMessage: string;
+    alertState: string;
 
     dismissAlert(): void {
         this.alertMessage = null;
+        this.alertState = "out";
     }
 
+    showAlert(msg: string): void {
+        this.alertMessage = msg;
+        this.alertState = "in";
+    }
 
     constructor(private http: Http, private router: Router) { }
 
@@ -59,12 +88,12 @@ export class RegisterComponent {
             .map(res => res.json())
             .subscribe((data: ResponseEntity) => {
                 if (data.code == 1) {
-                    this.alertMessage = "注册成功! 3秒后返回首页";
+                    this.showAlert("注册成功! 3秒后返回首页");
                     setTimeout(() => {
-                        this.router.navigate(['/login']);
+                        this.login();
                     }, 3000);
                 } else {
-                    this.alertMessage = "注册失败!";
+                    this.showAlert("注册失败!");
                 }
             })
 
@@ -74,14 +103,18 @@ export class RegisterComponent {
 
     check(): boolean {
         if (!(this.inputName && this.inputPassword && this.inputPasswordRe && this.inputAge && this.inputText)) {
-            this.alertMessage = "请填写完成所有信息后再提交!";
+            this.showAlert("请填写完成所有信息后再提交!");
             return false;
         }
         if (this.inputPassword !== this.inputPasswordRe) {
-            this.alertMessage = "两次密码输入不一致!";
+            this.showAlert("两次密码输入不一致!");
             return false;
         }
         return true;
+    }
+
+    login(): void {
+        this.router.navigate(['/login']);
     }
 
 }
